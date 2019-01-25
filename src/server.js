@@ -13,6 +13,11 @@ ws.on('open', function open() {
 */
 
 
+
+var player  = require('./Player');
+player.initialization("Maxipanda",1,4);
+console.log(player.getInfo());
+
 //SERVER
 var wss = new WebSocketServer({
     server: server
