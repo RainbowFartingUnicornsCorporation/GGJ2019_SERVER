@@ -1,6 +1,8 @@
 function RunTest(){
 
 // Test Player
+
+  console.log("Testing Player.js........");
   var player  = require('./Player');
   player.initialization("Maxipanda",1,4);
   player.moveTo(5,6);
@@ -10,9 +12,11 @@ function RunTest(){
   player.addToMaxInventory(20);
   player.getFood(10);
   console.log(player.getInfo());
+  console.log("End Player.js.");
 
 
 // Test Home
+  console.log("Testing Home.js........");
   var home = require('./Home');
   var homeworld1 = new home();
   homeworld1.incomingRsc(100);
@@ -26,8 +30,9 @@ function RunTest(){
   homeworld1.useReservePop();
   homeworld1.addReservePop(10);
   console.log(homeworld1.getInfo())
+  console.log("End Home.js");
 
-
+  console.log("Test completed sir. Ready to fire.");
 
 }
 
