@@ -8,7 +8,7 @@ class GameManager {
 
     constructor(debug){
         this.size = 100;
-        this.tickPerSec = 30;
+        this.tickPerSec = 10;
         this.ressources = [];
         this.players = {};
         this.home;
