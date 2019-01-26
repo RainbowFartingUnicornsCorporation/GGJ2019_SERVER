@@ -9,5 +9,4 @@ let arr = [ressource];
 let gameManager = new GameManager(arr, true);
 gameManager.generate(1);
 gameManager.startTick();
-gameManager.motivateFlux(1);
 

@@ -32,13 +32,9 @@ wss.on('connection', function(client, request) {
                 console.log("x : " + data.x + ", y : " + data.y);
                 gameManager.movePlayer(ip, data.x, data.y);
                 break;
-            case "collectRsc" : //id
-                console.log("Collect ressource");
-                gameManager.collectRsc(ip, data.id);
-                break;
-            case "activateFlux": //id
+            case "activateFlux":
                 console.log("Activate Flux");
-                gameManager.activateFlux(data.id);
+                gameManager.activateFlux(ip);
                 break;
             case "dropRscHome" : //5
                 console.log("Drop ressource to home");
@@ -48,8 +44,8 @@ wss.on('connection', function(client, request) {
                 console.log("Get ressource from home");
                 gameManager.getRscHome(ip);
                 break;
-            case "motivateFlux": //id
-                gameManager.motivate(data.id);
+            case "motivateFlux":
+                gameManager.motivate(ip);
                 break;
             default:
                 console.log("Unrecognize event ...");

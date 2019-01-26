@@ -2,6 +2,8 @@ Player  = require('./Player');
 Home  = require('./Home');
 Ressource  = require('./Ressource');
 
+const radius = 3;
+
 class GameManager {
 
     constructor(debug){
@@ -114,10 +116,12 @@ class GameManager {
      * @param idResc
      * Make a new flow of workers on the ressource
      */
-    activateFlux(idResc){
+    activateFlux(){
         let nbWorkers = home.useReservePop();
+        let player = this.players[ip]['player'];
         this.ressources.forEach((rsc)=> {
-            if (rsc.id == idResc) {
+            if(     player.posX < rsc.x+radius && player.posX > rsc.x-radius
+                &&  player.posY < rsc.y+radius && player.posY > rsc.y-radius){
                 rsc.addWorker(nbWorkers);
             }
         });
@@ -128,15 +132,23 @@ class GameManager {
      * @param id
      * Increase the flow to the ressource
      */
-    motivateFlux(id){
+    motivateFlux(ip){
         let nbWorker = 0;
+        let rscId = 0;
+        let player = this.players[ip]['player'];
+        this.ressources.forEach((rsc)=> {
+            if(     player.posX < rsc.x+radius && player.posX > rsc.x-radius
+                &&  player.posY < rsc.y+radius && player.posY > rsc.y-radius){
+                rscId = rsc.id;
+            }
+        });
         this.ressources.forEach((rsc)=>{
-            if(rsc.id != id){
+            if(rsc.id != rscId){
                 nbWorker += rsc.removeWorker();
             }
         });
         this.ressources.forEach((rsc)=>{
-            if(rsc.id == id){
+            if(rsc.id == rscId){
                rsc.addWorker(nbWorker);
             }
         });
@@ -185,7 +197,23 @@ class GameManager {
 
             //PLAYER
             for(let ip in this.players) {
-                let player = this.players[ip];
+                let player = this.players[ip]['player'];
+
+                //NEAR HOME
+                if(player.posX > radius && player.posX < radius && player.posY > radius && player.posY < radius){
+                    this.dropRscHome(ip);
+                    //TODO SEND EVENT !
+                }
+
+                //NEAR RESSOURCES ?
+                this.ressources.forEach((rsc)=>{
+                    if(     player.posX < rsc.x+radius && player.posX > rsc.x-radius
+                        &&  player.posY < rsc.y+radius && player.posY > rsc.y-radius){
+                        this.collectRsc(ip, rsc.id);
+                        //TODO SEND EVENT !
+                    }
+                });
+
                 if (!player['player'].consumeFood(1)) {
                     console.log("DEAD");
                     this.stopTick();

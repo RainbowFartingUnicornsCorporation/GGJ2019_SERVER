@@ -10,6 +10,7 @@ ws.on('open', function open() {
     console.log('connected to central');
 
     ws.send('{"event":"new","name":"Bob"}');
+    ws.send('{"event":"position","x":"1","y":"1"}');
 });
 
 ws.on('message', function(message) {
