@@ -68,6 +68,10 @@ class Player {
     this.food += nbFood;
   }
 
+  consumeFood(nbFood){
+    this.food -= nbFood;
+  }
+
 }
 
 module.exports = Player;

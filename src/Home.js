@@ -14,7 +14,7 @@ class Home {
   tickFood(){
     this.food -= Math.ceil(this.population/5);
     if(this.food <= 0){
-      console.log("THE NATION FAILED US ! WORKERS ARE DYING")
+      console.log("THE NATION FAILED US ! WORKERS ARE DYING");
       //TODO Make some worker die. Yeah. I know.
       this.food = 0;
     }
@@ -22,6 +22,11 @@ class Home {
 
   incomingRsc(nbRsc){
     this.ressources += nbRsc;
+  }
+
+  takeFood(){
+    this.food -= 5;
+    return 5;
   }
 
   tickRessources(){
