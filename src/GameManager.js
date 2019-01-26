@@ -8,9 +8,10 @@ class GameManager {
         this.size = 100;
         this.tickPerSec = 30;
         this.ressources = [];
-        this.players = [];
+        this.players = {};
         this.home;
         this.loop = null;
+        this.isTickStarted = false;
         this.debug=debug;
     }
 
@@ -29,6 +30,7 @@ class GameManager {
         this.loop = setInterval(() => {
             this.tickEvent();
         }, 1000/this.tickPerSec);
+        this.isTickStarted = true;
     }
 
     /**
@@ -36,6 +38,7 @@ class GameManager {
      */
     stopTick(){
         clearInterval(this.loop);
+        this.isTickStarted = false;
     }
 
     /**
@@ -50,7 +53,9 @@ class GameManager {
         this.players[ip] = [];
         this.players[ip]['player'] = new Player(name, 1, 4);
         this.players[ip]['ws'] = client;
-
+        if(! this.isTickStarted){
+            this.startTick();
+        }
         this.players[ip]['ws'].send(this.model(ip));
     }
 
@@ -104,58 +109,25 @@ class GameManager {
         }
     }
 
-    tickEvent(){
-        let isRessourceLoop = false;
-        if( GameManager.tickCount == undefined){
-            GameManager.tickCount = 0;
-        } else {
-            GameManager.tickCount +=1;
-            if ( GameManager.tickCount > this.tickPerSec){
-                GameManager.tickCount = 0;
-                isRessourceLoop = true;
+    /**
+     *
+     * @param idResc
+     * Make a new flow of workers on the ressource
+     */
+    activateFlux(idResc){
+        let nbWorkers = home.useReservePop();
+        this.ressources.forEach((rsc)=> {
+            if (rsc.id == idResc) {
+                rsc.addWorker(nbWorkers);
             }
-        }
-
-        //RESSOURCES
-        if(isRessourceLoop) {
-            this.ressources.forEach((ressource) => {
-                ressource.tickRessource();
-            });
-        }
-
-        //HOME
-        if(isRessourceLoop) {
-            this.home.tickRessources();
-            this.home.tickFood();
-        }
-
-        //PLAYER
-        this.players.forEach((player)=>{
-            player['player'].consumeFood(1);
         });
-
-        //DEBUG
-        if(this.debug) {
-
-            //SEND POSITION OF ALL PLAYERS/ENTITY ?
-            this.players.forEach((p)=>{
-                p['ws'].send("LE CACA");
-            });
-
-            if (isRessourceLoop) {
-                console.log("RESSOURCE TICK !!!!");
-                this.ressources.forEach((r)=>{
-                    console.log(r.size);
-                });
-            }
-        }
     }
 
-    activateFlux(){
-        //TODO don't know how it will be
-
-    }
-
+    /**
+     *
+     * @param id
+     * Increase the flow to the ressource
+     */
     motivateFlux(id){
         let nbWorker = 0;
         this.ressources.forEach((rsc)=>{
@@ -170,6 +142,12 @@ class GameManager {
         });
     }
 
+    /**
+     *
+     * @param ip
+     * @returns {string} JSON
+     * Return the game state
+     */
     model(ip){
         let model = {};
         model.ressources = this.ressources;
@@ -177,6 +155,54 @@ class GameManager {
         model.home = this.home;
         return JSON.stringify(model);
 
+    }
+
+    /**
+     * Execute one tick
+     */
+    tickEvent(){
+        let isRessourceLoop = false;
+        if( GameManager.tickCount == undefined){
+            GameManager.tickCount = 0;
+        } else {
+            GameManager.tickCount +=1;
+            if ( GameManager.tickCount > this.tickPerSec){
+                GameManager.tickCount = 0;
+                isRessourceLoop = true;
+            }
+        }
+
+        if(isRessourceLoop) {
+
+            //RESSOURCES
+            this.ressources.forEach((ressource) => {
+                ressource.tickRessource();
+            });
+
+            //HOME
+            this.home.tickRessources();
+            this.home.tickFood();
+        }
+
+        //PLAYER
+        for(let ip in this.players){
+            let player = this.players[ip];
+            if(! player['player'].consumeFood(1)){
+                console.log("DEAD");
+                this.stopTick();
+            }
+            player['ws'].send(this.model(ip));
+        }
+
+        //DEBUG
+        if(this.debug) {
+            if (isRessourceLoop) {
+                console.log("RESSOURCE TICK !!!!");
+                this.ressources.forEach((r)=>{
+                    console.log(r.size);
+                });
+            }
+        }
     }
 
 }

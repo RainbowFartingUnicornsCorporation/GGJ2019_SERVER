@@ -9,7 +9,7 @@ const ws = new WebSocket('ws://'+benIP+':8080');
 ws.on('open', function open() {
     console.log('connected to central');
 
-    ws.send('{"event":"new","name":"JC"}');
+    ws.send('{"event":"new","name":"Bob"}');
 });
 
 ws.on('message', function(message) {

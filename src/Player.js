@@ -69,7 +69,12 @@ class Player {
   }
 
   consumeFood(nbFood){
-    this.food -= nbFood;
+    if(this.food > 0) {
+      this.food -= nbFood;
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }
