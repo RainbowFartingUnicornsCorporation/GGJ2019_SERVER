@@ -38,8 +38,8 @@ class Player {
     this.posY = y;
   }
 
-  getRsc(){
-    this.inventory += 5;
+  getRsc(nbRsc){
+    this.inventory += nbRsc;
   }
 
   tryToDropRsc(){

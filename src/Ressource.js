@@ -57,5 +57,17 @@ class Ressource {
         }
     }
 
+    takeRessource(){
+        let newSize = this.size - 5;
+        if(newSize < 0){
+            let nbRsc = this.size;
+            this.size = 0;
+            return nbRsc;
+        } else {
+            this.size = newSize;
+            return 5;
+        }
+    }
+
 
 } module.exports = Ressource;

@@ -7,8 +7,11 @@ class Home {
     this.food = 100;
     this.ressources = 0;
     this.population = 0;
-    this.foodGoal = 150;
+    this.foodGoal = 100;
+    this.step = 20;
     this.reservePop = 0;
+    this.posX = 0;
+    this.posY = 0;
   }
 
   tickFood(){
@@ -41,8 +44,8 @@ class Home {
 
       // Create worker ?
       if(this.food > this.foodGoal){
-        this.food -= 50;  // use 50 food to create a worker
-        this.foodGoal += 50; // next goal is 50 food higher
+        this.food -= this.step;  // use 50 food to create a worker
+        this.foodGoal += this.step; // next goal is 50 food higher
         this.reservePop++;
       }
     }

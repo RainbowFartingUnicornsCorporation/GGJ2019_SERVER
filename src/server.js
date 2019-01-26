@@ -6,7 +6,7 @@ const port = 8080;
 
 //CREATING GAME MANAGER
 let gameManager = new GameManager();
-gameManager.generate();
+gameManager.generate(5);
 
 //INITIALIZATION SERVER
 const wss = new WebSocket.Server({
@@ -28,12 +28,12 @@ wss.on('connection', function(client, request) {
                 gameManager.createPlayer(ip, data.name,client);
                 break;
             case "position" :
-                console.log('New position !');
-                console.log("x : " + data.x + ", y : " + data.y);
+                //console.log('New position !');
+               // console.log("x : " + data.x + ", y : " + data.y);
                 gameManager.movePlayer(ip, data.x, data.y);
                 break;
             case "activateFlux":
-                console.log("Activate Flux");
+                //console.log("Activate Flux");
                 gameManager.activateFlux(ip);
                 break;
             case "dropRscHome" : //5

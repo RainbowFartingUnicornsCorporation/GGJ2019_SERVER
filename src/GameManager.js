@@ -2,7 +2,7 @@ Player  = require('./Player');
 Home  = require('./Home');
 Ressource  = require('./Ressource');
 
-const radius = 3;
+const radius = 7;
 
 class GameManager {
 
@@ -19,10 +19,19 @@ class GameManager {
 
     generate(nbRessource){
         this.home = new Home();
-        /*for(let i=0; i<nbRessource; i++){
+        let pos = {};
+        for(let i=0; i<nbRessource; i++){
+            let dist = 0;
+            do {
+                pos = {
+                    posX: Math.floor(Math.random() * Math.floor(120))-60,
+                    posY: Math.floor(Math.random() * Math.floor(120))-60
+                };
+                dist = this.computeDistance(pos, this.home);
+            } while(dist<35 || dist > 100);
 
-        }*/
-        this.ressources.push(new Ressource(10,8,15));
+            this.ressources.push(new Ressource(pos.posX,pos.posY,Math.random()*(65-45)+45));
+        }
     }
 
     /**
@@ -78,9 +87,9 @@ class GameManager {
      * @param idRsc
      * Get some ressources from a source and gave it to the player
      */
-    collectRsc(ip, idRsc){
-        this.ressources[idRsc].takeRsc();
-        this.players[ip]['player'].getRsc();
+    collectRsc(ip, index){
+        let nbRsc = this.ressources[index].takeRessource();
+        this.players[ip]['player'].getRsc(nbRsc);
     }
 
     /**
@@ -120,8 +129,7 @@ class GameManager {
         let nbWorkers = home.useReservePop();
         let player = this.players[ip]['player'];
         this.ressources.forEach((rsc)=> {
-            if(     player.posX < rsc.x+radius && player.posX > rsc.x-radius
-                &&  player.posY < rsc.y+radius && player.posY > rsc.y-radius){
+            if(this.computeDistance(player, rsc) <= radius){
                 rsc.addWorker(nbWorkers);
             }
         });
@@ -137,8 +145,7 @@ class GameManager {
         let rscId = 0;
         let player = this.players[ip]['player'];
         this.ressources.forEach((rsc)=> {
-            if(     player.posX < rsc.x+radius && player.posX > rsc.x-radius
-                &&  player.posY < rsc.y+radius && player.posY > rsc.y-radius){
+            if(this.computeDistance(player, rsc) <= radius){
                 rscId = rsc.id;
             }
         });
@@ -200,19 +207,18 @@ class GameManager {
                 let player = this.players[ip]['player'];
 
                 //NEAR HOME
-                if(player.posX > radius && player.posX < radius && player.posY > radius && player.posY < radius){
+                if(this.computeDistance(player, this.home) <= radius){
                     this.dropRscHome(ip);
+                    console.log("DROP IT");
                     //TODO SEND EVENT !
                 }
 
                 //NEAR RESSOURCES ?
-                this.ressources.forEach((rsc)=>{
-                    if(     player.posX < rsc.x+radius && player.posX > rsc.x-radius
-                        &&  player.posY < rsc.y+radius && player.posY > rsc.y-radius){
-                        this.collectRsc(ip, rsc.id);
+                this.ressources.forEach((rsc,index)=>{
 
-                        console.log('MIAM MIAM');
-
+                    if(this.computeDistance(player, rsc) <= radius){
+                        this.collectRsc(ip, index);
+                        console.log('GET IT');
                         //TODO SEND EVENT !
                     }
                 });
@@ -241,6 +247,12 @@ class GameManager {
         }
     }
 
+
+    computeDistance(vec1,vec2){
+        let tmp1 = (vec1.posX - vec2.posX) * (vec1.posX - vec2.posX);
+        let tmp2 = (vec1.posY - vec2.posY) * (vec1.posY - vec2.posY);
+        return Math.sqrt(tmp1 + tmp2);
+    }
 }
 
 module.exports = GameManager;
