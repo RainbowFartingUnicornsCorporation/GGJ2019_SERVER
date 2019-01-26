@@ -214,7 +214,7 @@ class GameManager {
                     }
                 });
 
-                if (!player['player'].consumeFood(1)) {
+                if (!player.consumeFood(1)) {
                     console.log("DEAD");
                     this.stopTick();
                 }
