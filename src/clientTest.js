@@ -1,11 +1,17 @@
 WebSocket = require('ws');
 
-const ws = new WebSocket('ws://localhost:30682');
+const warrowsIP = "10.16.178.141";
+const benIP = "10.16.178.105";
+
+const ws = new WebSocket('ws://'+benIP+':8080');
 
 
 ws.on('open', function open() {
     console.log('connected to central');
 
+    ws.send('{"event":"new","name":"JC"}');
+});
 
-    ws.send('{"event":"position","x":1,"y":3}');
+ws.on('message', function(message) {
+    console.log(message);
 });
