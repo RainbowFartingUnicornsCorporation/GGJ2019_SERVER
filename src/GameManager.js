@@ -88,8 +88,13 @@ class GameManager {
      * Get some ressources from a source and gave it to the player
      */
     collectRsc(ip, index){
-        let nbRsc = this.ressources[index].takeRessource();
-        this.players[ip]['player'].getRsc(nbRsc);
+        let player = this.players[ip]['player'];
+        let rest = player.maxInventory-player.inventory;
+        rest = Math.min(rest, 5);
+        if(rest > 0) {
+            let nbRsc = this.ressources[index].takeRessource(rest);
+            this.players[ip]['player'].getRsc(nbRsc);
+        }
     }
 
     /**

@@ -57,15 +57,15 @@ class Ressource {
         }
     }
 
-    takeRessource(){
-        let newSize = this.size - 5;
+    takeRessource(nbResc){
+        let newSize = this.size - nbResc;
         if(newSize < 0){
             let nbRsc = this.size;
             this.size = 0;
             return nbRsc;
         } else {
             this.size = newSize;
-            return 5;
+            return nbResc;
         }
     }
 

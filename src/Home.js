@@ -38,9 +38,10 @@ class Home {
       if(this.ressources < 10){
         this.food += this.ressources;
         this.ressources = 0;
+      } else {
+          this.ressources -= 10;
+          this.food += 10;
       }
-      this.ressources -= 10;
-      this.food += 10;
 
       // Create worker ?
       if(this.food > this.foodGoal){
