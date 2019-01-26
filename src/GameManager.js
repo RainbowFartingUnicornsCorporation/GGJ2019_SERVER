@@ -211,7 +211,7 @@ class GameManager {
                         &&  player.posY < rsc.y+radius && player.posY > rsc.y-radius){
                         this.collectRsc(ip, rsc.id);
 
-                        console.log('MIAM MIAM')!
+                        console.log('MIAM MIAM');
 
                         //TODO SEND EVENT !
                     }
