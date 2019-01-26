@@ -3,14 +3,14 @@ Home  = require('./Home');
 
 class GameManager {
 
-    constructor(){
+    constructor(ressources, debug){
         this.size = 100;
-        this.tickTime = 25; //milliseconds
-        this.ressources = [];
+        this.tickPerSec = 30;
+        this.ressources = ressources;
         this.players = [];
-        this.ressources = [];
         this.home = new Home();
         this.loop = null;
+        this.debug=debug;
     }
 
     /**
@@ -19,7 +19,7 @@ class GameManager {
     startTick(){
         this.loop = setInterval(() => {
             this.tickEvent();
-        }, this.tickTime);
+        }, 1000/this.tickPerSec);
     }
 
     /**
@@ -94,17 +94,45 @@ class GameManager {
     }
 
     tickEvent(){
-        //RESSOURCES
+        let isRessourceLoop = false;
+        if( GameManager.tickCount == undefined){
+            GameManager.tickCount = 0;
+        } else {
+            GameManager.tickCount +=1;
+            if ( GameManager.tickCount > this.tickPerSec){
+                GameManager.tickCount = 0;
+                isRessourceLoop = true;
+            }
+        }
 
+        //RESSOURCES
+        if(isRessourceLoop) {
+            this.ressources.forEach((ressource) => {
+                ressource.tickRessource();
+            });
+        }
 
         //HOME
-        this.home.tickRessources();
-        this.home.tickFood();
+        if(isRessourceLoop) {
+            this.home.tickRessources();
+            this.home.tickFood();
+        }
 
         //PLAYER
         this.players.forEach((player)=>{
             player['player'].consumeFood(1);
         });
+
+        //DEBUG
+        if(this.debug) {
+            //console.log(GameManager.tickCount);
+            if (isRessourceLoop) {
+                console.log("RESSOURCE TICK !!!!");
+                this.ressources.forEach((r)=>{
+                    console.log(r.size);
+                });
+            }
+        }
     }
 
     activateFlux(){
