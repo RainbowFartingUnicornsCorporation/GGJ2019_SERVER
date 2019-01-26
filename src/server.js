@@ -6,6 +6,7 @@ const port = 8080;
 
 //CREATING GAME MANAGER
 let gameManager = new GameManager();
+gameManager.generate();
 
 //INITIALIZATION SERVER
 const wss = new WebSocket.Server({

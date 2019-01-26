@@ -8,5 +8,5 @@ ressource.addWorker(11);
 let arr = [ressource];
 let gameManager = new GameManager(arr, true);
 gameManager.startTick();
-
+gameManager.motivateFlux(1);
 

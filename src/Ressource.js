@@ -26,7 +26,12 @@ class Ressource {
     }
 
     removeWorker(){
-        this.nbWorker -= 1;
+        if(this.nbWorker > 0) {
+            this.nbWorker -= 1;
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     tickRessource(){

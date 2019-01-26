@@ -1,16 +1,25 @@
 Player  = require('./Player');
 Home  = require('./Home');
+Ressource  = require('./Ressource');
 
 class GameManager {
 
-    constructor(ressources, debug){
+    constructor(debug){
         this.size = 100;
         this.tickPerSec = 30;
-        this.ressources = ressources;
+        this.ressources = [];
         this.players = [];
-        this.home = new Home();
+        this.home;
         this.loop = null;
         this.debug=debug;
+    }
+
+    generate(nbRessource){
+        this.home = new Home();
+        /*for(let i=0; i<nbRessource; i++){
+
+        }*/
+        this.ressources.push(new Ressource(10,8,15));
     }
 
     /**
@@ -41,6 +50,8 @@ class GameManager {
         this.players[ip] = [];
         this.players[ip]['player'] = new Player(name, 1, 4);
         this.players[ip]['ws'] = client;
+
+        this.players[ip]['ws'].send(this.model(ip));
     }
 
     /**
@@ -125,7 +136,12 @@ class GameManager {
 
         //DEBUG
         if(this.debug) {
-            //console.log(GameManager.tickCount);
+
+            //SEND POSITION OF ALL PLAYERS/ENTITY ?
+            this.players.forEach((p)=>{
+                p['ws'].send("LE CACA");
+            });
+
             if (isRessourceLoop) {
                 console.log("RESSOURCE TICK !!!!");
                 this.ressources.forEach((r)=>{
@@ -137,10 +153,30 @@ class GameManager {
 
     activateFlux(){
         //TODO don't know how it will be
+
     }
 
-    motivateFlux(){
-        //TODO  don't know how it will be
+    motivateFlux(id){
+        let nbWorker = 0;
+        this.ressources.forEach((rsc)=>{
+            if(rsc.id != id){
+                nbWorker += rsc.removeWorker();
+            }
+        });
+        this.ressources.forEach((rsc)=>{
+            if(rsc.id == id){
+               rsc.addWorker(nbWorker);
+            }
+        });
+    }
+
+    model(ip){
+        let model = {};
+        model.ressources = this.ressources;
+        model.player = this.players[ip]["player"];
+        model.home = this.home;
+        return JSON.stringify(model);
+
     }
 
 }
