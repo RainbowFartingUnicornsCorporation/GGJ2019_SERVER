@@ -2,7 +2,9 @@ function RunTest(){
 
 // Test Player
 
-  console.log("Testing Player.js........");
+  console.log("#####################################");
+  console.log("#############Testing Player.js........");
+  console.log("#####################################");
   var player  = require('./Player');
   player.initialization("Maxipanda",1,4);
   player.moveTo(5,6);
@@ -16,7 +18,9 @@ function RunTest(){
 
 
 // Test Home
-  console.log("Testing Home.js........");
+  console.log("#####################################");
+  console.log("#############Testing Home.js........");
+  console.log("#####################################");
   var home = require('./Home');
   var homeworld1 = new home();
   homeworld1.incomingRsc(100);
