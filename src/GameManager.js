@@ -8,7 +8,7 @@ class GameManager {
 
     constructor(debug){
         this.size = 100;
-        this.tickPerSec = 10;
+        this.tickPerSec = 1;
         this.ressources = [];
         this.players = {};
         this.home;
@@ -210,6 +210,9 @@ class GameManager {
                     if(     player.posX < rsc.x+radius && player.posX > rsc.x-radius
                         &&  player.posY < rsc.y+radius && player.posY > rsc.y-radius){
                         this.collectRsc(ip, rsc.id);
+
+                        console.log('MIAM MIAM')!
+
                         //TODO SEND EVENT !
                     }
                 });
