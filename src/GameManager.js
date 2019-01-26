@@ -182,15 +182,20 @@ class GameManager {
             //HOME
             this.home.tickRessources();
             this.home.tickFood();
+
+            //PLAYER
+            for(let ip in this.players) {
+                let player = this.players[ip];
+                if (!player['player'].consumeFood(1)) {
+                    console.log("DEAD");
+                    this.stopTick();
+                }
+            }
         }
 
         //PLAYER
         for(let ip in this.players){
             let player = this.players[ip];
-            if(! player['player'].consumeFood(1)){
-                console.log("DEAD");
-                this.stopTick();
-            }
             player['ws'].send(this.model(ip));
         }
 
