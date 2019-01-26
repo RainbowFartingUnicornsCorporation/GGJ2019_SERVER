@@ -38,6 +38,7 @@ class GameManager {
      * Use the IP as key
      */
     createPlayer(ip, name, client){
+        this.players[ip] = [];
         this.players[ip]['player'] = new Player(name, 1, 4);
         this.players[ip]['ws'] = client;
     }
