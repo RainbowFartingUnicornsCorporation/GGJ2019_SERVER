@@ -2,9 +2,8 @@ WebSocket = require('ws');
 const port = 30682;
 
 //INITIALIZATION PLAYER >> TESTING
-var player  = require('./Player');
-player.initialization("Maxipanda",1,4);
-console.log(player.getInfo());
+var testRunner  = require('./TestAll');
+testRunner();
 
 //INITIALIZATION SERVER
 const wss = new WebSocket.Server({
