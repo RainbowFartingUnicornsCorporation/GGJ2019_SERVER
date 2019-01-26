@@ -38,8 +38,8 @@ var Player = {
   },
 
   getRsc(){
-    this.
-  }
+    this.inventory += 5;
+  },
 
   tryToDropRsc(){
     let nbRscDropped = 5
@@ -53,15 +53,15 @@ var Player = {
       return left;
     }
     return nbRscDropped;
-  }
+  },
 
   addToMaxFood(foodToAdd){
     this.maxFood += foodToAdd;
-  }
+  },
 
   addToMaxInventory(inventoryToAdd){
     this.maxFood += inventoryToAdd;
-  }
+  },
 
   getFood(nbFood){
     this.food += nbFood;

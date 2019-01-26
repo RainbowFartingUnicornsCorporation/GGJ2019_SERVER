@@ -7,5 +7,5 @@ ws.on('open', function open() {
     console.log('connected to central');
 
 
-    ws.send('cctvvmb');
+    ws.send('{"event":"position","x":1,"y":3}');
 });
