@@ -183,11 +183,9 @@ class GameManager {
     model(ip){
         let model = {};
         model.ressources = this.ressources;
-        console.log(this.ressources);
         model.player = this.players[ip]["player"];
         model.home = this.home;
         return JSON.stringify(model);
-
     }
 
     /**
@@ -245,7 +243,11 @@ class GameManager {
         //PLAYER
         for(let ip in this.players){
             let player = this.players[ip];
-            player['ws'].send(this.model(ip));
+            if(player['ws'].readyState === player['ws'].OPEN) {
+                player['ws'].send(this.model(ip));
+            } else {
+                console.log("/!\\ CONNECTION CLOSED")
+            }
         }
 
         //DEBUG

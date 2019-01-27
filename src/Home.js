@@ -59,10 +59,12 @@ class Home {
 
   // Use the reserve population, and return the number of workers
   useReservePop(){
+    let x = 0;
     if(this.reservePop > 0){
       this.reservePop-= 1;
+      x = 1;
     }
-    return 1;
+    return x;
   }
 
   getInfo(){
