@@ -2,7 +2,8 @@ Player  = require('./Player');
 Home  = require('./Home');
 Ressource  = require('./Ressource');
 
-const radius = 7;
+const radius = 20;
+const radiusHome = 12;
 
 class GameManager {
 
@@ -187,11 +188,11 @@ class GameManager {
         model.home = this.home;
 
         let players = [];
-        this.players.forEach((p, ipIndex)=>{
-             if(ipIndex != ip){
-                 players.push({posX:p.posX, posY:p.posY, name:p.name});
+        for (i in this.players)
+             if(i != ip && this.players[i].food > 0){
+                 players.push({posX:this.players[i], posY:this.players[i], name:p.name});
              }
-        });
+        }
         model.otherPlayers = players;
         return JSON.stringify(model);
     }
@@ -227,7 +228,7 @@ class GameManager {
                 let player = this.players[ip]['player'];
 
                 //NEAR HOME
-                if(this.computeDistance(player, this.home) <= radius){
+                if(this.computeDistance(player, this.home) <= radiusHome){
                     this.dropRscHome(ip);
                     //TODO SEND EVENT !
                 }
