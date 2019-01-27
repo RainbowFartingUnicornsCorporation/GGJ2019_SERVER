@@ -141,11 +141,17 @@ class GameManager {
      * Make a new flow of workers on the ressource
      */
     activateFlux(ip){
-        let nbWorkers = this.home.useReservePop();
         let player = this.players[ip]['player'];
         this.ressources.forEach((rsc)=> {
             if(this.computeDistance(player, rsc) <= radius){
-                rsc.addWorker(nbWorkers);
+
+                let nbWorkers = this.home.useReservePop();
+
+                if(rsc.nbWorker == 0) {
+                    rsc.addWorker(nbWorkers);
+                } else {
+                    this.motivateFlux(rsc.id, nbWorkers);
+                }
             }
         });
     }
@@ -155,15 +161,7 @@ class GameManager {
      * @param id
      * Increase the flow to the ressource
      */
-    motivateFlux(ip){
-        let nbWorker = 0;
-        let rscId = 0;
-        let player = this.players[ip]['player'];
-        this.ressources.forEach((rsc)=> {
-            if(this.computeDistance(player, rsc) <= radius){
-                rscId = rsc.id;
-            }
-        });
+    motivateFlux(rscId, nbWorker){
         this.ressources.forEach((rsc)=>{
             if(rsc.id != rscId){
                 nbWorker += rsc.removeWorker();
@@ -185,6 +183,7 @@ class GameManager {
     model(ip){
         let model = {};
         model.ressources = this.ressources;
+        console.log(this.ressources);
         model.player = this.players[ip]["player"];
         model.home = this.home;
         return JSON.stringify(model);
@@ -254,7 +253,7 @@ class GameManager {
             if (isRessourceLoop) {
                 console.log("RESSOURCE TICK !!!!");
                 this.ressources.forEach((r)=>{
-                    console.log(r.size);
+                    //console.log(r.size);
                 });
             }
         }

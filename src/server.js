@@ -44,9 +44,6 @@ wss.on('connection', function(client, request) {
                 console.log("Get ressource from home");
                 gameManager.getRscHome(ip);
                 break;
-            case "motivateFlux":
-                gameManager.motivate(ip);
-                break;
             default:
                 console.log("Unrecognize event ...");
                 console.log(message);

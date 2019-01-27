@@ -46,8 +46,7 @@ class Ressource {
     }
 
     consumeRessources(){
-        let newSize = Math.round(this.size - this.nbWorker*0.3);
-        console.log(newSize);
+        let newSize = Math.ceil(this.size - this.nbWorker*0.3);
         if(newSize < 0){
             let nbRsc = this.size;
             this.size = 0;
