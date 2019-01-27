@@ -33,14 +33,14 @@ wss.on('connection', function(client, request) {
                 gameManager.movePlayer(ip, data.x, data.y);
                 break;
             case "activateFlux":
-                //console.log("Activate Flux");
+                console.log("Activate Flux");
                 gameManager.activateFlux(ip);
                 break;
             case "dropRscHome" : //5
                 console.log("Drop ressource to home");
                 gameManager.dropRscHome(ip);
                 break;
-            case "getRsvHome" : //5
+            case "getRscHome" : //5
                 console.log("Get ressource from home");
                 gameManager.getRscHome(ip);
                 break;

@@ -19,16 +19,22 @@ class GameManager {
 
     generate(nbRessource){
         this.home = new Home();
-        let pos = {};
+
         for(let i=0; i<nbRessource; i++){
-            let dist = 0;
+            let correct = true;
+            let pos = {};
             do {
                 pos = {
                     posX: Math.floor(Math.random() * Math.floor(120))-60,
                     posY: Math.floor(Math.random() * Math.floor(120))-60
                 };
-                dist = this.computeDistance(pos, this.home);
-            } while(dist<35 || dist > 100);
+                let dist = this.computeDistance(pos, this.home);
+                if(dist>35 && dist < 100) {
+                    correct = true;
+                } else {
+                    correct = false;
+                }
+            } while(! correct);
 
             this.ressources.push(new Ressource(pos.posX,pos.posY,Math.random()*(65-45)+45));
         }
@@ -130,8 +136,8 @@ class GameManager {
      * @param idResc
      * Make a new flow of workers on the ressource
      */
-    activateFlux(){
-        let nbWorkers = home.useReservePop();
+    activateFlux(ip){
+        let nbWorkers = this.home.useReservePop();
         let player = this.players[ip]['player'];
         this.ressources.forEach((rsc)=> {
             if(this.computeDistance(player, rsc) <= radius){
