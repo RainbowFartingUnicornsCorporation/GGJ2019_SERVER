@@ -27,9 +27,9 @@ class Home {
     this.ressources += nbRsc;
   }
 
-  takeFood(){
-    this.food -= 5;
-    return 5;
+  takeFood(nbFood){
+    this.food -= nbFood;
+    return nbFood;
   }
 
   tickRessources(){

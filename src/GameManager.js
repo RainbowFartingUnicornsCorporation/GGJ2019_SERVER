@@ -122,9 +122,14 @@ class GameManager {
      * Get five food and give it to the player
      */
     getRscHome(ip){
-        let nbFood = this.home.takeFood();
-        if(nbFood > 0) {
-            this.players[ip]['player'].getFood();
+        let step = 5;
+        let player = this.players[ip]['player'];
+
+        step = Math.min(player.maxFood-player.food,step);
+
+        let nbFood = this.home.takeFood(step);
+        if (nbFood > 0) {
+            player.getFood(nbFood);
         } else {
             //this.players[ip]['ws'].send(false);
         }
@@ -219,7 +224,6 @@ class GameManager {
                 //NEAR HOME
                 if(this.computeDistance(player, this.home) <= radius){
                     this.dropRscHome(ip);
-                    //console.log("DROP IT");
                     //TODO SEND EVENT !
                 }
 
@@ -228,7 +232,6 @@ class GameManager {
 
                     if(this.computeDistance(player, rsc) <= radius){
                         this.collectRsc(ip, index);
-                        //console.log('GET IT');
                         //TODO SEND EVENT !
                     }
                 });
