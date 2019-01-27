@@ -4,6 +4,8 @@ GameManager = require('./GameManager');
 
 const port = 8080;
 
+let names = ['Bob', 'Samus sans armure', 'Mike', 'Lara'];
+
 //CREATING GAME MANAGER
 let gameManager = new GameManager();
 gameManager.generate(5);
@@ -25,7 +27,8 @@ wss.on('connection', function(client, request) {
         switch (data.event) {
             case "new" :
                 console.log("New player !");
-                gameManager.createPlayer(ip, data.name,client);
+                let n = names.pop();
+                gameManager.createPlayer(ip, n,client);
                 break;
             case "position" :
                 //console.log('New position !');

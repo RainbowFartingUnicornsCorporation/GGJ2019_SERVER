@@ -185,6 +185,14 @@ class GameManager {
         model.ressources = this.ressources;
         model.player = this.players[ip]["player"];
         model.home = this.home;
+
+        let players = [];
+        this.players.forEach((p, ipIndex)=>{
+             if(ipIndex != ip){
+                 players.push({posX:p.posX, posY:p.posY, name:p.name});
+             }
+        });
+        model.otherPlayers = players;
         return JSON.stringify(model);
     }
 
