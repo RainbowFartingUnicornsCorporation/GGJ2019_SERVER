@@ -189,8 +189,8 @@ class GameManager {
 
         let players = [];
         for (let i in this.players){
-             if(i != ip && this.players[i].food > 0){
-                 players.push({posX:this.players[i], posY:this.players[i], name: this.players[i].name});
+             if(i != ip){
+                 players.push({posX:this.players[i]["player"].posX, posY:this.players[i]["player"].posY, name: this.players[i]["player"].name});
              }
         }
         model.otherPlayers = players;
