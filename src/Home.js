@@ -48,6 +48,7 @@ class Home {
         this.food -= this.step;  // use 50 food to create a worker
         this.foodGoal += this.step; // next goal is 50 food higher
         this.reservePop++;
+        this.population++;
       }
     }
   }
