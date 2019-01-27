@@ -8,7 +8,7 @@ class GameManager {
 
     constructor(debug){
         this.size = 100;
-        this.tickPerSec = 1;
+        this.tickPerSec = 10;
         this.ressources = [];
         this.players = {};
         this.home;
@@ -20,22 +20,21 @@ class GameManager {
     generate(nbRessource){
         this.home = new Home();
 
+        let oldPos = {posX:0, posY:0};
+        let dist = 0;
+        let distHome = 0;
         for(let i=0; i<nbRessource; i++){
-            let correct = true;
             let pos = {};
             do {
                 pos = {
-                    posX: Math.floor(Math.random() * Math.floor(120))-60,
-                    posY: Math.floor(Math.random() * Math.floor(120))-60
+                    posX: Math.floor(Math.random() * Math.floor(400)-200),
+                    posY: Math.floor(Math.random() * Math.floor(400)-200)
                 };
-                let dist = this.computeDistance(pos, this.home);
-                if(dist>35 && dist < 100) {
-                    correct = true;
-                } else {
-                    correct = false;
-                }
-            } while(! correct);
+                dist = this.computeDistance(oldPos, pos);
+                distHome = this.computeDistance(this.home, pos);
 
+            } while((dist < 75 || dist > 200) && (distHome < 75 || distHome > 200));
+            console.log('NEW RSC : ' + pos.posX + ', ' + pos.posY);
             this.ressources.push(new Ressource(pos.posX,pos.posY,Math.random()*(65-45)+45));
         }
     }
@@ -113,7 +112,7 @@ class GameManager {
         if(nbRsc){
             this.home.incomingRsc(nbRsc);
         } else {
-            this.players[ip]['ws'].send(false);
+            //this.players[ip]['ws'].send(false);
         }
     }
 
@@ -127,7 +126,7 @@ class GameManager {
         if(nbFood > 0) {
             this.players[ip]['player'].getFood();
         } else {
-            this.players[ip]['ws'].send(false);
+            //this.players[ip]['ws'].send(false);
         }
     }
 
@@ -220,7 +219,7 @@ class GameManager {
                 //NEAR HOME
                 if(this.computeDistance(player, this.home) <= radius){
                     this.dropRscHome(ip);
-                    console.log("DROP IT");
+                    //console.log("DROP IT");
                     //TODO SEND EVENT !
                 }
 
@@ -229,7 +228,7 @@ class GameManager {
 
                     if(this.computeDistance(player, rsc) <= radius){
                         this.collectRsc(ip, index);
-                        console.log('GET IT');
+                        //console.log('GET IT');
                         //TODO SEND EVENT !
                     }
                 });
