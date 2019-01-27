@@ -210,7 +210,7 @@ class GameManager {
 
             //RESSOURCES
             this.ressources.forEach((ressource) => {
-                ressource.tickRessource();
+                this.home.incomingRsc(ressource.tickRessource());
             });
 
             //HOME
