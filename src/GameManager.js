@@ -96,7 +96,7 @@ class GameManager {
     collectRsc(ip, index){
         let player = this.players[ip]['player'];
         let rest = player.maxInventory-player.inventory;
-        rest = Math.min(rest, 5);
+        rest = Math.min(rest, 10);
         if(rest > 0) {
             let nbRsc = this.ressources[index].takeRessource(rest);
             this.players[ip]['player'].getRsc(nbRsc);

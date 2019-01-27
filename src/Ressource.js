@@ -41,7 +41,7 @@ class Ressource {
     }
 
     multiply(){
-        let newSize = this.size * 1.2;
+        let newSize = this.size * 1.05;
         this.size = Math.min(newSize, this.sizeMax);
     }
 
